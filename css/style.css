@@ -33,6 +33,7 @@ main{
 }
 .safe{
     background-color: navy;
+    color: white;
 }
 .unsafe{
     background-color: red;

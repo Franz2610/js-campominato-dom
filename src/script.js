@@ -27,8 +27,22 @@ const levelForm = document.getElementById('levelForm');
 // Creiamo un evento al invio 
 levelForm.addEventListener('submit', play);
 
+//Creiamo la funzione play 
+function play(e) {
+    e.preventDefault();
+    const playground = document.getElementById('playground');
+    playground.innerHTML = '';
 
-//funzione per creare la cella
+    let message = 'Seleziona la difficolatà. Premi play.';
+    setMessage(message);
+    let score = 0;
+
+    // numero costante di bombe
+    const NUM_BOMBS = 16;
+
+    let gameOver = false;
+
+    //funzione per creare la cella
 function drawSquare(index, numSquares) {
     const square = document.createElement('div');
     square.classList.add('square');
@@ -56,19 +70,14 @@ function setMessage(message) {
         const score = document.getElementById('score');
         score.innerHTML = message;
 }
-
-//Creiamo la funzione play 
-function play(e) {
-    e.preventDefault();
-    const playground = document.getElementById('playground');
-    playground.innerHTML = '';
-
-    let message = 'Seleziona la difficolatà. Premi play.';
-    setMessage(message);
-    let score = 0;
-
-    // numero costante di bombe
-    const NUM_BOMBS = 16;
+function showAllBombs(bombs){
+    const squares = document.querySelectorAll('.square');
+    for (let square of squares) {
+        if (bombs.includes(parseInt(square.innerText))){
+            square.classList.add('unsafe');
+        }
+    }
+}
 
     // Basta prendersi solo il valore
     const level = document.getElementById('level').value;
@@ -91,33 +100,39 @@ function play(e) {
     
     
     
-    console.log(squareNumbers);
+    //console.log(squareNumbers);
     
     // Determino il numero di celle per lato
     let squareperRow = Math.sqrt(squareNumbers);
-    console.log(squareperRow);
+    //console.log(squareperRow);
 
     //Genero l'array con le bombe
     const bombs = generateBombs (NUM_BOMBS, squareNumbers);
-    console.log(bombs);
+    //console.log(bombs);
 
 
     // per il numero di celle genero la cella
     for(let i=1 ; i <= squareNumbers; i++){
         const square = drawSquare(i, squareperRow);
-
-        square.addEventListener('click', function () {
-            if (bombs.includes(parseInt(this.innerText))){
-                this.classList.add('unsafe');
-            } else {
-                square.classList.add('safe');
-                score ++;
-                message =`Il tuo punteggio è : ${score}`;
-                setMessage(message);
-            }
-        });
+        square.addEventListener('click',  handleSquareEvent);
         playground.appendChild(square);
     }
+    function handleSquareEvent () {
+            if (!gameOver && !this.classList.contains('safe')) {
+                if (bombs.includes(parseInt(this.innerText))){
+                    this.classList.add('unsafe');
+                    message =`Hai perso. Il tuo punteggio è : ${score}`;
+                    gameOver = true;
+                    showAllBombs(bombs);
+                } else {
+                    this.classList.add('safe');
+                    score ++;
+                    message = score === squareNumbers ? `Hai vinto! Il tuo punteggio è : ${score}` : `Il tuo punteggio è : ${score}`;
+                    square.removeEventListener('click', handleSquareEvent);
+                }
+                setMessage(message);
+            }
+        }
 }
 
 
