@@ -38,12 +38,26 @@ function drawSquare(index, numSquares) {
     return square;
 }
 
-//Creiamo la funzione play 
 
+//Generatore di bombe
+function generateBombs (numbombs, max) {
+    const bombs= [];
+    while (bombs.length < numbombs){
+        const bomb = getRndNumber(1, max);
+        if(!bombs.includes(bomb)) {
+            bombs.push(bomb);
+        }
+    }
+    return bombs;
+}
+
+//Creiamo la funzione play 
 function play(e) {
     e.preventDefault();
     const playground = document.getElementById('playground');
     playground.innerHTML = '';
+
+    const NUM_BOMBS = 16;
 
     // Basta prendersi solo il valore
     const level = document.getElementById('level').value;
@@ -63,11 +77,15 @@ function play(e) {
             squareNumbers = 49;
             break; 
     }
-    console.log(squareNumbers);
+    // console.log(squareNumbers);
     
     // Determino il numero di celle per lato
     let squareperRow = Math.sqrt(squareNumbers);
-    console.log(squareperRow);
+    // console.log(squareperRow);
+
+    //Genero l'array con le bombe
+    const bombs = generateBombs (NUM_BOMBS, squareNumbers);
+    // console.log(bombs);
 
 
     // per il numero di celle genero la cella
