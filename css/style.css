@@ -34,3 +34,6 @@ main{
 .safe{
     background-color: navy;
 }
+.unsafe{
+    background-color: red;
+}

@@ -77,15 +77,18 @@ function play(e) {
             squareNumbers = 49;
             break; 
     }
-    // console.log(squareNumbers);
+    
+    
+    
+    console.log(squareNumbers);
     
     // Determino il numero di celle per lato
     let squareperRow = Math.sqrt(squareNumbers);
-    // console.log(squareperRow);
+    console.log(squareperRow);
 
     //Genero l'array con le bombe
     const bombs = generateBombs (NUM_BOMBS, squareNumbers);
-    // console.log(bombs);
+    console.log(bombs);
 
 
     // per il numero di celle genero la cella
@@ -93,9 +96,14 @@ function play(e) {
         const square = drawSquare(i, squareperRow);
 
         square.addEventListener('click', function () {
-            square.classList.add('safe');
+            if (bombs.includes(parseInt(this.innerText))){
+                this.classList.add('unsafe');
+            } else {
+                square.classList.add('safe');
+            }
         });
         playground.appendChild(square);
     }
 }
+
 
