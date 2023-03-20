@@ -51,12 +51,23 @@ function generateBombs (numbombs, max) {
     return bombs;
 }
 
+function setMessage(message) {
+        //prendere il messaggio
+        const score = document.getElementById('score');
+        score.innerHTML = message;
+}
+
 //Creiamo la funzione play 
 function play(e) {
     e.preventDefault();
     const playground = document.getElementById('playground');
     playground.innerHTML = '';
 
+    let message = 'Seleziona la difficolatà. Premi play.';
+    setMessage(message);
+    let score = 0;
+
+    // numero costante di bombe
     const NUM_BOMBS = 16;
 
     // Basta prendersi solo il valore
@@ -100,6 +111,9 @@ function play(e) {
                 this.classList.add('unsafe');
             } else {
                 square.classList.add('safe');
+                score ++;
+                message =`Il tuo punteggio è : ${score}`;
+                setMessage(message);
             }
         });
         playground.appendChild(square);
